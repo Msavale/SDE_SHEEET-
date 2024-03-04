@@ -1,0 +1,70 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <omp.h>
+using namespace std;
+
+// Function to compare and swap elements based on the given direction
+void compAndSwap(vector<int>& arr, int i, int j, bool dir) {
+    if ((arr[i] > arr[j] && dir) || (arr[i] < arr[j] && !dir))
+        swap(arr[i], arr[j]);
+}
+
+// Function to perform Bitonic Merge
+void bitonicMerge(vector<int>& arr, int low, int cnt, bool dir) {
+    if (cnt > 1) {
+        int k = cnt / 2;
+        for (int i = low; i < low + k; i++)
+            compAndSwap(arr, i, i + k, dir);
+        bitonicMerge(arr, low, k, dir);
+        bitonicMerge(arr, low + k, k, dir);
+    }
+}
+
+// Function to perform Bitonic Sort
+void bitonicSort(vector<int>& arr, int low, int cnt, bool dir) {
+    if (cnt > 1) {
+        int k = cnt / 2;
+        // Sort in ascending order
+        bitonicSort(arr, low, k, true);
+        // Sort in descending order
+        bitonicSort(arr, low + k, k, false);
+        // Merge the results
+        bitonicMerge(arr, low, cnt, dir);
+    }
+}
+
+// Function to call Bitonic Sort
+void bitonicSortParallel(vector<int>& arr, int n, bool dir) {
+    int chunk_size = n / omp_get_max_threads();
+    #pragma omp parallel for schedule(static, chunk_size)
+    for (int i = 2; i <= n; i *= 2) {
+        for (int j = 0; j < n; j += i) {
+            bitonicSort(arr, j, i, dir);
+        }
+    }
+}
+
+int main() {
+    int N;
+    cout << "Enter the size of the array: ";
+    cin >> N;
+
+    vector<int> arr(N);
+    cout << "Enter the elements of the array: ";
+    for (int i = 0; i < N; i++) {
+        cin >> arr[i];
+    }
+
+    // Perform Bitonic sort
+    bitonicSortParallel(arr, N, true);
+
+    // Print the sorted array
+    cout << "Sorted array: ";
+    for (int num : arr) {
+        cout << num << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
