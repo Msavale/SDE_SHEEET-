@@ -1,0 +1,45 @@
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
+
+void countDistinctInWindow(const vector<int>& nums, int k) {
+    unordered_map<int, int> freqMap;
+    int distinctCount = 0;
+
+    // Count frequency of elements in the first window
+    for (int i = 0; i < k; ++i) {
+        if (freqMap[nums[i]] == 0) {
+            distinctCount++;
+        }
+        freqMap[nums[i]]++;
+    }
+
+    cout << "Window 1: " << distinctCount << " distinct elements" << endl;
+
+    // Process remaining windows
+    for (int i = k; i < nums.size(); ++i) {
+        // Remove the element going out of the window
+        freqMap[nums[i - k]]--;
+        if (freqMap[nums[i - k]] == 0) {
+            distinctCount--;
+        }
+
+        // Add the new element entering the window
+        if (freqMap[nums[i]] == 0) {
+            distinctCount++;
+        }
+        freqMap[nums[i]]++;
+
+        cout << "Window " << i - k + 2 << ": " << distinctCount << " distinct elements" << endl;
+    }
+}
+
+int main() {
+    vector<int> nums = {1, 2, 1, 3, 4, 2, 3};
+    int k = 4;
+    cout << "Counts of distinct elements in every window of size " << k << ":" << endl;
+    countDistinctInWindow(nums, k);
+    return 0;
+}
