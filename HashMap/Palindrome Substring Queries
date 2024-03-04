@@ -1,0 +1,49 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+vector<int> countPalindromes(const string& s) {
+    int n = s.length();
+    vector<int> prefixSum(n + 1, 0); // Prefix sum array to store the count of palindromic substrings up to each index
+    vector<int> result;
+
+    // Initialize the prefix sum array
+    for (int i = 1; i <= n; ++i) {
+        prefixSum[i] = prefixSum[i - 1];
+        for (int j = 0; j < i; ++j) {
+            // Check if substring from j to i-1 is a palindrome
+            bool isPalindrome = true;
+            for (int k = j; k < (i + j) / 2; ++k) {
+                if (s[k] != s[i - 1 - (k - j)]) {
+                    isPalindrome = false;
+                    break;
+                }
+            }
+            if (isPalindrome) {
+                prefixSum[i]++;
+            }
+        }
+    }
+
+    // Process queries
+    for (int i = 1; i <= n; ++i) {
+        result.push_back(prefixSum[i]);
+    }
+
+    return result;
+}
+
+int main() {
+    string s = "abaaab";
+    vector<int> result = countPalindromes(s);
+    
+    cout << "Number of palindromic substrings for each prefix: ";
+    for (int count : result) {
+        cout << count << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
