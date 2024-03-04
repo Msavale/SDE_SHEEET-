@@ -1,0 +1,58 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+// Function to check if the given array is sorted
+bool isSorted(const vector<int>& arr) {
+    for (int i = 1; i < arr.size(); ++i) {
+        if (arr[i] < arr[i - 1]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// Function to generate permutations and check for a sorted permutation
+void permuteAndCheck(vector<int>& arr, int l, int r) {
+    if (l == r) {
+        if (isSorted(arr)) {
+            // If the permutation is sorted, print it
+            for (int num : arr) {
+                cout << num << " ";
+            }
+            cout << endl;
+            exit(0); // Exit after finding the first sorted permutation
+        }
+    } else {
+        for (int i = l; i <= r; ++i) {
+            swap(arr[l], arr[i]);
+            permuteAndCheck(arr, l + 1, r);
+            swap(arr[l], arr[i]);
+        }
+    }
+}
+
+// Function to perform Permutation Sort
+void permutationSort(vector<int>& arr) {
+    int n = arr.size();
+    permuteAndCheck(arr, 0, n - 1);
+}
+
+int main() {
+    int N;
+    cout << "Enter the size of the array: ";
+    cin >> N;
+
+    vector<int> arr(N);
+    cout << "Enter the elements of the array: ";
+    for (int i = 0; i < N; i++) {
+        cin >> arr[i];
+    }
+
+    // Perform Permutation sort
+    cout << "Sorted array: ";
+    permutationSort(arr);
+
+    return 0;
+}
