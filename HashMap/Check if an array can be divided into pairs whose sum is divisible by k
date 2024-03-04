@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
+
+bool canDivideIntoPairs(const vector<int>& nums, int k) {
+    if (nums.size() % 2 != 0) {
+        return false; // Array size must be even to form pairs
+    }
+
+    unordered_map<int, int> remainderCount;
+
+    // Count the frequency of remainders when divided by k
+    for (int num : nums) {
+        int remainder = (num % k + k) % k; // Ensure remainder is positive
+        remainderCount[remainder]++;
+    }
+
+    // Check if the frequency of each remainder allows forming pairs
+    for (auto& pair : remainderCount) {
+        int remainder = pair.first;
+        int count = pair.second;
+        if (remainder == 0) {
+            // If remainder is 0, count must be even
+            if (count % 2 != 0) {
+                return false;
+            }
+        } else if (2 * remainder == k) {
+            // If remainder is half of k, count must be even
+            if (count % 2 != 0) {
+                return false;
+            }
+        } else {
+            // Otherwise, remainder and k-remainder must have the same count
+            if (remainderCount[k - remainder] != count) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+int main() {
+    vector<int> nums = {9, 7, 5, 3};
+    int k = 6;
+
+    if (canDivideIntoPairs(nums, k)) {
+        cout << "Array can be divided into pairs whose sum is divisible by " << k << endl;
+    } else {
+        cout << "Array cannot be divided into pairs whose sum is divisible by " << k << endl;
+    }
+
+    return 0;
+}
