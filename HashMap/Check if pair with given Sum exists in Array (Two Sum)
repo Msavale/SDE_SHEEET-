@@ -1,0 +1,32 @@
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+
+using namespace std;
+
+bool hasPairWithSum(const vector<int>& nums, int target) {
+    unordered_map<int, int> hashmap;
+
+    for (int num : nums) {
+        int complement = target - num;
+        if (hashmap.find(complement) != hashmap.end()) {
+            return true; // Found pair with given sum
+        }
+        hashmap[num] = 1;
+    }
+
+    return false; // No pair found
+}
+
+int main() {
+    vector<int> nums = {2, 7, 11, 15};
+    int target = 9;
+
+    if (hasPairWithSum(nums, target)) {
+        cout << "A pair with the sum " << target << " exists in the array." << endl;
+    } else {
+        cout << "No pair with the sum " << target << " exists in the array." << endl;
+    }
+
+    return 0;
+}
