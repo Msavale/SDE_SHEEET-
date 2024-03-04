@@ -1,0 +1,63 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void cocktailSort(vector<int>& arr) {
+    bool swapped = true;
+    int start = 0;
+    int end = arr.size() - 1;
+
+    while (swapped) {
+        swapped = false;
+
+        // Forward pass (ascending order)
+        for (int i = start; i < end; i++) {
+            if (arr[i] > arr[i + 1]) {
+                swap(arr[i], arr[i + 1]);
+                swapped = true;
+            }
+        }
+
+        // If no swaps occurred, the list is already sorted
+        if (!swapped)
+            break;
+
+        // Decrement end as the last element is already in its correct position
+        end--;
+
+        // Backward pass (descending order)
+        for (int i = end; i > start; i--) {
+            if (arr[i] < arr[i - 1]) {
+                swap(arr[i], arr[i - 1]);
+                swapped = true;
+            }
+        }
+
+        // Increment start as the first element is already in its correct position
+        start++;
+    }
+}
+
+int main() {
+    int N;
+    cout << "Enter the size of the array: ";
+    cin >> N;
+
+    vector<int> arr(N);
+    cout << "Enter the elements of the array: ";
+    for (int i = 0; i < N; i++) {
+        cin >> arr[i];
+    }
+
+    // Perform Cocktail sort
+    cocktailSort(arr);
+
+    // Print the sorted array
+    cout << "Sorted array: ";
+    for (int num : arr) {
+        cout << num << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
