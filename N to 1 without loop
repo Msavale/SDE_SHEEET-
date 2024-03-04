@@ -1,0 +1,14 @@
+vector<int>ans;
+
+vector<int> printNos(int x) {
+     if(x==0){
+
+      return ans;
+
+    }
+
+    ans.push_back(x);
+
+    return printNos(x-1);
+
+}
