@@ -1,0 +1,37 @@
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+
+using namespace std;
+
+bool findPairsWithEqualSum(const vector<int>& nums) {
+    unordered_map<int, pair<int, int>> sumMap; // Key: sum, Value: pair of indices (i, j) where nums[i] + nums[j] = sum
+
+    // Populate sumMap with all possible pairs and their sums
+    int n = nums.size();
+    for (int i = 0; i < n - 1; ++i) {
+        for (int j = i + 1; j < n; ++j) {
+            int sum = nums[i] + nums[j];
+            if (sumMap.find(sum) == sumMap.end()) {
+                sumMap[sum] = make_pair(i, j);
+            } else {
+                // Found a pair with equal sum
+                pair<int, int> pair1 = sumMap[sum];
+                cout << "Pairs with equal sum found: " << nums[pair1.first] << ", " << nums[pair1.second] << " and " << nums[i] << ", " << nums[j] << endl;
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+int main() {
+    vector<int> nums = {3, 4, 7, 1, 2, 9, 8};
+
+    if (!findPairsWithEqualSum(nums)) {
+        cout << "No pairs with equal sum found." << endl;
+    }
+
+    return 0;
+}
