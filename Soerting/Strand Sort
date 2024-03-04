@@ -1,0 +1,68 @@
+#include <iostream>
+#include <list>
+using namespace std;
+
+// Function to perform Strand Sort
+void strandSort(list<int>& arr, list<int>& result) {
+    while (!arr.empty()) {
+        list<int> sublist;
+        sublist.push_back(arr.front());
+        arr.pop_front();
+
+        for (auto it = arr.begin(); it != arr.end(); ) {
+            if (*it > sublist.back()) {
+                sublist.push_back(*it);
+                it = arr.erase(it);
+            } else {
+                ++it;
+            }
+        }
+
+        // Merge the sublist into the result list
+        if (result.empty()) {
+            result = move(sublist);
+        } else {
+            list<int> merged;
+            auto it1 = result.begin(), it2 = sublist.begin();
+            while (it1 != result.end() && it2 != sublist.end()) {
+                if (*it1 < *it2) {
+                    merged.push_back(*it1);
+                    ++it1;
+                } else {
+                    merged.push_back(*it2);
+                    ++it2;
+                }
+            }
+            merged.insert(merged.end(), it1, result.end());
+            merged.insert(merged.end(), it2, sublist.end());
+            result = move(merged);
+        }
+    }
+}
+
+int main() {
+    int N;
+    cout << "Enter the size of the array: ";
+    cin >> N;
+
+    list<int> arr;
+    cout << "Enter the elements of the array: ";
+    for (int i = 0; i < N; i++) {
+        int num;
+        cin >> num;
+        arr.push_back(num);
+    }
+
+    // Perform Strand sort
+    list<int> sortedList;
+    strandSort(arr, sortedList);
+
+    // Print the sorted array
+    cout << "Sorted array: ";
+    for (int num : sortedList) {
+        cout << num << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
