@@ -1,0 +1,35 @@
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
+
+int largestSubarrayWithEqualZerosAndOnes(const vector<int>& nums) {
+    unordered_map<int, int> countMap; // Key: count of 0s - count of 1s, Value: index
+
+    int maxLength = 0;
+    int count = 0; // Represents the count of 0s - count of 1s
+
+    // Insert initial count (-1 at index -1)
+    countMap[0] = -1;
+
+    for (int i = 0; i < nums.size(); ++i) {
+        // Update count based on current element
+        count += (nums[i] == 0) ? 1 : -1;
+
+        // If current count has been seen before, update maxLength
+        if (countMap.find(count) != countMap.end()) {
+            maxLength = max(maxLength, i - countMap[count]);
+        } else {
+            countMap[count] = i;
+        }
+    }
+
+    return maxLength;
+}
+
+int main() {
+    vector<int> nums = {0, 1, 0, 1, 1, 0, 1, 0, 1};
+    cout << "Largest subarray with equal number of 0s and 1s: " << largestSubarrayWithEqualZerosAndOnes(nums) << endl;
+    return 0;
+}
