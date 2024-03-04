@@ -1,0 +1,50 @@
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+// Function to find the itinerary
+vector<string> findItinerary(const vector<pair<string, string>>& tickets) {
+    unordered_map<string, string> itineraryMap;
+    
+    // Populate the itinerary map
+    for (const auto& ticket : tickets) {
+        itineraryMap[ticket.first] = ticket.second;
+    }
+    
+    vector<string> itinerary;
+    
+    // Find the starting point
+    string start;
+    for (const auto& ticket : tickets) {
+        if (itineraryMap.find(ticket.first) == itineraryMap.end()) {
+            start = ticket.first;
+            break;
+        }
+    }
+    
+    // Build the itinerary
+    string next = start;
+    while (!next.empty()) {
+        itinerary.push_back(next);
+        next = itineraryMap[next];
+    }
+    
+    return itinerary;
+}
+
+int main() {
+    vector<pair<string, string>> tickets = { {"SFO", "HNL"}, {"YUL", "YYZ"}, {"YYZ", "SFO"}, {"HNL", "YUL"} };
+
+    vector<string> itinerary = findItinerary(tickets);
+
+    cout << "Itinerary: ";
+    for (const string& airport : itinerary) {
+        cout << airport << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
