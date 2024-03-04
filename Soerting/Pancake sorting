@@ -1,0 +1,70 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Function to reverse elements in a prefix of the array
+void flip(vector<int>& arr, int end) {
+    int start = 0;
+    while (start < end) {
+        swap(arr[start], arr[end]);
+        start++;
+        end--;
+    }
+}
+
+// Function to find the index of the maximum element in the array
+int findMaxIndex(vector<int>& arr, int n) {
+    int maxIndex = 0;
+    for (int i = 1; i < n; i++) {
+        if (arr[i] > arr[maxIndex])
+            maxIndex = i;
+    }
+    return maxIndex;
+}
+
+// Function to perform Pancake Sort
+vector<int> pancakeSort(vector<int>& arr) {
+    int n = arr.size();
+    vector<int> result;
+
+    for (int size = n; size > 1; size--) {
+        // Find the index of the maximum element in the unsorted part of the array
+        int maxIndex = findMaxIndex(arr, size);
+
+        // If the maximum element is not at the end of the array, flip to move it to the beginning
+        if (maxIndex != size - 1) {
+            // First flip moves the maximum element to the beginning
+            flip(arr, maxIndex);
+            result.push_back(maxIndex + 1);
+
+            // Second flip moves the maximum element to its correct position
+            flip(arr, size - 1);
+            result.push_back(size);
+        }
+    }
+    return result;
+}
+
+int main() {
+    int N;
+    cout << "Enter the size of the array: ";
+    cin >> N;
+
+    vector<int> arr(N);
+    cout << "Enter the elements of the array: ";
+    for (int i = 0; i < N; i++) {
+        cin >> arr[i];
+    }
+
+    // Perform Pancake sort
+    vector<int> flips = pancakeSort(arr);
+
+    // Print the flips required to sort the array
+    cout << "Flips required to sort the array:" << endl;
+    for (int flip : flips) {
+        cout << flip << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
