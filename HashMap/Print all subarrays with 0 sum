@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
+
+void printAllSubarraysWithZeroSum(const vector<int>& nums) {
+    unordered_map<int, vector<int>> sumIndices; // Key: sum, Value: vector of indices with the same sum
+    int currentSum = 0;
+
+    // Iterate through the array and update the prefix sums
+    for (int i = 0; i < nums.size(); ++i) {
+        currentSum += nums[i];
+        
+        // If the current sum is 0, print the subarray from index 0 to i
+        if (currentSum == 0) {
+            cout << "Subarray with sum 0: [0, " << i << "]" << endl;
+        }
+
+        // If the current sum has been encountered before, print all subarrays with the same sum
+        if (sumIndices.find(currentSum) != sumIndices.end()) {
+            vector<int> indices = sumIndices[currentSum];
+            for (int index : indices) {
+                cout << "Subarray with sum 0: [" << index + 1 << ", " << i << "]" << endl;
+            }
+        }
+
+        // Update the hashmap with the current sum and its index
+        sumIndices[currentSum].push_back(i);
+    }
+}
+
+int main() {
+    vector<int> nums = {3, 4, -7, 3, 1, 3, 1, -4, -2, -2};
+    cout << "Subarrays with sum 0:" << endl;
+    printAllSubarraysWithZeroSum(nums);
+    return 0;
+}
