@@ -1,0 +1,38 @@
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+
+using namespace std;
+
+int maxLengthSubarrayWithZeroSum(const vector<int>& nums) {
+    unordered_map<int, int> prefixSumMap; // Key: prefix sum, Value: index
+
+    int maxSubarrayLength = 0;
+    int currentSum = 0;
+
+    for (int i = 0; i < nums.size(); ++i) {
+        currentSum += nums[i];
+
+        // If the current sum is 0, update the maxSubarrayLength to include the elements from the start
+        if (currentSum == 0) {
+            maxSubarrayLength = i + 1;
+        }
+        // If the current sum was seen before, update the maxSubarrayLength if necessary
+        else if (prefixSumMap.find(currentSum) != prefixSumMap.end()) {
+            maxSubarrayLength = max(maxSubarrayLength, i - prefixSumMap[currentSum]);
+        }
+        // If the current sum is encountered for the first time, store it in the hashmap
+        else {
+            prefixSumMap[currentSum] = i;
+        }
+    }
+
+    return maxSubarrayLength;
+}
+
+int main() {
+    vector<int> nums = {15, -2, 2, -8, 1, 7, 10, 23};
+    cout << "Length of the largest subarray with 0 sum: " << maxLengthSubarrayWithZeroSum(nums) << endl;
+
+    return 0;
+}
