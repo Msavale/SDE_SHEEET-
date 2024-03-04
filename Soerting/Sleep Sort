@@ -1,0 +1,46 @@
+#include <iostream>
+#include <thread>
+#include <chrono>
+#include <vector>
+using namespace std;
+
+// Function executed by each thread
+void sleepAndPrint(int num) {
+    // Sleep for 'num' milliseconds
+    this_thread::sleep_for(chrono::milliseconds(num));
+    // Print the value after sleeping
+    cout << num << " ";
+}
+
+// Function to perform Sleep Sort
+void sleepSort(const vector<int>& arr) {
+    // Create a thread for each element in the array
+    vector<thread> threads;
+    for (int num : arr) {
+        threads.emplace_back(sleepAndPrint, num);
+    }
+
+    // Join all the threads to ensure they complete execution
+    for (thread& t : threads) {
+        t.join();
+    }
+}
+
+int main() {
+    int N;
+    cout << "Enter the size of the array: ";
+    cin >> N;
+
+    vector<int> arr(N);
+    cout << "Enter the elements of the array: ";
+    for (int i = 0; i < N; i++) {
+        cin >> arr[i];
+    }
+
+    // Perform Sleep sort
+    cout << "Sorted array: ";
+    sleepSort(arr);
+    cout << endl;
+
+    return 0;
+}
