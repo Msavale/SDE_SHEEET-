@@ -1,0 +1,58 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Function to perform comb sort
+void combSort(vector<int>& arr) {
+    int n = arr.size();
+
+    // Initialize gap
+    int gap = n;
+
+    // Initialize swapped as true to make sure that the loop runs at least once
+    bool swapped = true;
+
+    // Keep running while gap is more than 1 or there are swaps
+    while (gap != 1 || swapped) {
+        // Update gap according to Comb Sort's shrink factor
+        gap = (gap * 10) / 13;
+        if (gap < 1)
+            gap = 1;
+
+        // Initialize swapped as false, indicating no swaps are done yet
+        swapped = false;
+
+        // Compare all elements with current gap
+        for (int i = 0; i < n - gap; i++) {
+            if (arr[i] > arr[i + gap]) {
+                // Swap arr[i] and arr[i+gap] if they are in the wrong order
+                swap(arr[i], arr[i + gap]);
+                swapped = true; // Set swapped to true indicating a swap is done
+            }
+        }
+    }
+}
+
+int main() {
+    int N;
+    cout << "Enter the size of the array: ";
+    cin >> N;
+
+    vector<int> arr(N);
+    cout << "Enter the elements of the array: ";
+    for (int i = 0; i < N; i++) {
+        cin >> arr[i];
+    }
+
+    // Perform Comb sort
+    combSort(arr);
+
+    // Print the sorted array
+    cout << "Sorted array: ";
+    for (int num : arr) {
+        cout << num << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
