@@ -1,0 +1,17 @@
+int largestElement(vector<int> &arr, int n) {
+
+    // Write your code here.
+
+     int mx=0;
+
+    for(int i=0;i<arr.size();i++){
+
+        mx=max(mx,arr[i]);
+
+    }
+
+    return mx;
+
+    
+
+}
