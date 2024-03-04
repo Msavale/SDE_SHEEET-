@@ -1,0 +1,19 @@
+bool isSubset(const vector<int>& arr1, const vector<int>& arr2) {
+    unordered_map<int, int> hashmap;
+
+    // Populate hashmap with elements from arr1
+    for (int num : arr1) {
+        hashmap[num]++;
+    }
+
+    // Check if elements of arr2 are present in the hashmap
+    for (int num : arr2) {
+        if (hashmap.find(num) == hashmap.end() || hashmap[num] == 0) {
+            return false;
+        } else {
+            hashmap[num]--;
+        }
+    }
+
+    return true;
+}
