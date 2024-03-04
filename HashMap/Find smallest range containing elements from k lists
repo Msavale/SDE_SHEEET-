@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <climits>
+
+using namespace std;
+
+struct Element {
+    int val;
+    int listIndex;
+    int index;
+    
+    Element(int v, int li, int idx) : val(v), listIndex(li), index(idx) {}
+};
+
+struct CompareElement {
+    bool operator()(const Element& e1, const Element& e2) const {
+        return e1.val > e2.val;
+    }
+};
+
+pair<int, int> smallestRange(const vector<vector<int>>& nums) {
+    int k = nums.size();
+    vector<int> pointers(k, 0); // pointers[i] is the current index in the ith list
+    priority_queue<Element, vector<Element>, CompareElement> minHeap; // min-heap to store the next smallest element from each list
+    int maxVal = INT_MIN;
+    pair<int, int> resultRange(INT_MAX, INT_MIN); // (start, end) of the smallest range
+    
+    // Initialize min-heap with the first element from each list
+    for (int i = 0; i < k; ++i) {
+        minHeap.push(Element(nums[i][0], i, 0));
+        maxVal = max(maxVal, nums[i][0]);
+    }
+    
+    while (true) {
+        Element minElement = minHeap.top();
+        minHeap.pop();
+        
+        int minVal = minElement.val;
+        int listIndex = minElement.listIndex;
+        int index = minElement.index;
+        
+        if (maxVal - minVal < resultRange.second - resultRange.first) {
+            resultRange = {minVal, maxVal};
+        }
+        
+        // Move pointer for the current list
+        if (index + 1 < nums[listIndex].size()) {
+            minHeap.push(Element(nums[listIndex][index + 1], listIndex, index + 1));
+            maxVal = max(maxVal, nums[listIndex][index + 1]);
+        } else {
+            break; // At least one list is exhausted
+        }
+    }
+    
+    return resultRange;
+}
+
+int main() {
+    vector<vector<int>> nums = {{4, 10, 15, 24, 26},
+                                 {0, 9, 12, 20},
+                                 {5, 18, 22, 30}};
+    
+    pair<int, int> range = smallestRange(nums);
+    
+    cout << "Smallest range containing elements from k lists: [" << range.first << ", " << range.second << "]" << endl;
+    
+    return 0;
+}
