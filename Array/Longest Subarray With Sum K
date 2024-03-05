@@ -1,0 +1,22 @@
+int longestSubarrayWithSumK(vector<int> arr, long long k) {
+    int i=0;
+    int j=0;
+    long long int sum=0;
+    int ans=0;
+    int n = arr.size();
+    while(j<n)
+    {
+        sum+=arr[j];
+        while(sum>k)
+        {
+            sum-=arr[i];
+            i++;
+        }
+        if(sum==k)
+        {
+            ans= max(ans, j-i+1);
+        }
+        j++;
+    }
+    return ans;
+}
