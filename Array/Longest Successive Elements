@@ -1,0 +1,29 @@
+int longestSuccessiveElements(vector<int>&a) {
+     sort(a.begin(),a.end());
+
+    int longestSucc=0;
+
+    int currSucc=1;
+
+ 
+
+    for(int i=0; i<a.size()-1; i++)
+
+    {
+
+      if (a[i + 1] == a[i] + 1) currSucc++;
+
+      else if(a[i+1]==a[i]) continue;
+
+      else {
+
+        longestSucc = max(longestSucc, currSucc);
+
+        currSucc = 1;
+
+      }
+
+    }
+
+    return max(longestSucc,currSucc);
+}
