@@ -1,0 +1,24 @@
+#include<bits/stdc++.h>
+int subarrayWithMaxProduct(vector<int> &arr){
+
+    int n = arr.size();
+
+    int maxProduct = 1;
+
+    int minProduct = 1;
+
+    int result = INT_MIN;
+    for(int i = 0; i<n; i++){
+        if(arr[i]<0){
+
+            swap(maxProduct,minProduct);
+        }
+        maxProduct = max(arr[i],maxProduct*arr[i]);
+
+        minProduct = min(arr[i],minProduct*arr[i]);
+        result = max(result,maxProduct);
+
+    }
+    return result;
+
+}
