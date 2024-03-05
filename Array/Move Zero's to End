@@ -1,0 +1,17 @@
+vector<int> moveZeros(int n, vector<int> a) {
+
+    // Write your code here.
+
+    a.erase(remove(a.begin(),a.end(),0),a.end());
+
+    int m=a.size();
+
+    int k=n-m;
+
+    a.insert(a.end(),k,0);
+
+    return a;
+
+ 
+
+}
