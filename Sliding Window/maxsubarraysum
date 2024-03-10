@@ -1,0 +1,19 @@
+int maxSubarraySum(const vector<int>& arr) {
+    int maxSum = INT_MIN;
+    int windowSum = 0;
+    
+    // Initialize the window sum with the first three elements
+    for (int i = 0; i < 3; ++i) {
+        windowSum += arr[i];
+    }
+    
+    // Start sliding the window
+    for (int i = 3; i < arr.size(); ++i) {
+        windowSum += arr[i] - arr[i - 3]; // Add the next element and remove the first element of the window
+        
+        // Update maxSum if necessary
+        maxSum = max(maxSum, windowSum);
+    }
+    
+    return maxSum;
+}
