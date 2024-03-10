@@ -1,0 +1,11 @@
+int kadaneAlgorithm(const std::vector<int>& nums) {
+    int maxEndingHere = 0; // Maximum sum ending at the current position
+    int maxSoFar = INT_MIN; // Maximum sum seen so far
+    
+    for (int num : nums) {
+        maxEndingHere = std::max(num, maxEndingHere + num);
+        maxSoFar = std::max(maxSoFar, maxEndingHere);
+    }
+    
+    return maxSoFar;
+}
