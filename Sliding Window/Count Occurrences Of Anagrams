@@ -1,0 +1,39 @@
+int countOccurrencesOfAnagrams(string s, string pattern) {
+    int n = s.length();
+    int k = pattern.length();
+
+    if (n < k)
+        return 0;
+
+    unordered_map<char, int> patternFreq;
+    unordered_map<char, int> windowFreq;
+
+    // Count frequency of characters in pattern
+    for (char ch : pattern)
+        patternFreq[ch]++;
+
+    int count = 0;
+
+    // Initialize sliding window
+    for (int i = 0; i < k; ++i)
+        windowFreq[s[i]]++;
+
+    // Check if first window is an anagram
+    if (patternFreq == windowFreq)
+        count++;
+
+    // Slide the window and check for anagrams
+    for (int i = k; i < n; ++i) {
+        // Add the new character to the window
+        windowFreq[s[i]]++;
+
+        // Remove the leftmost character from the window
+        windowFreq[s[i - k]]--;
+
+        // If the frequency maps are equal, it's an anagram
+        if (patternFreq == windowFreq)
+            count++;
+    }
+
+    return count;
+}
