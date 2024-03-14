@@ -1,0 +1,21 @@
+int longestSubstringWithKUniqueCharacters(const string& s, int k) {
+    int n = s.length();
+    unordered_map<char, int> charFreq;
+    int left = 0, maxLen = 0;
+
+    for (int right = 0; right < n; ++right) {
+        charFreq[s[right]]++;
+
+        while (charFreq.size() > k) {
+            charFreq[s[left]]--;
+            if (charFreq[s[left]] == 0) {
+                charFreq.erase(s[left]);
+            }
+            left++;
+        }
+
+        maxLen = max(maxLen, right - left + 1);
+    }
+
+    return maxLen;
+}
