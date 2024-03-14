@@ -1,0 +1,21 @@
+int maxToys(const vector<int>& toys) {
+    int n = toys.size();
+    unordered_map<int, int> toyFreq;
+    int left = 0, maxToysCount = 0;
+
+    for (int right = 0; right < n; ++right) {
+        toyFreq[toys[right]]++;
+
+        while (toyFreq.size() > 2) {
+            toyFreq[toys[left]]--;
+            if (toyFreq[toys[left]] == 0) {
+                toyFreq.erase(toys[left]);
+            }
+            left++;
+        }
+
+        maxToysCount = max(maxToysCount, right - left + 1);
+    }
+
+    return maxToysCount;
+}
