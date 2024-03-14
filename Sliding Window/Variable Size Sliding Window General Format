@@ -1,0 +1,25 @@
+int variableSizeSlidingWindow(const vector<int>& arr, int target) {
+    int n = arr.size();
+    int start = 0; // Left pointer
+    int end = 0;   // Right pointer
+    int sum = 0;   // Variable to track the sum or any other metric of the window
+
+    while (end < n) {
+        // Expand the window
+        sum += arr[end];
+        
+        // Check if some condition is met
+        while (/* Condition */) {
+            // Shrink the window
+            sum -= arr[start];
+            start++; // Move the left pointer
+        }
+
+        // Update the result or perform some operation
+
+        // Move the right pointer to expand the window
+        end++;
+    }
+
+    return /* Result */;
+}
