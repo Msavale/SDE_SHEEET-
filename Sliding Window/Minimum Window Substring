@@ -1,0 +1,46 @@
+string minWindowSubstring(string s, string t) {
+    // Step 1: Create hashmap to store frequency of characters in string t
+    unordered_map<char, int> targetFreq;
+    for (char c : t) {
+        targetFreq[c]++;
+    }
+    
+    // Step 2: Initialize pointers and variables
+    int left = 0, right = 0;
+    int minWindowStart = 0, minWindowLen = INT_MAX;
+    int requiredChars = targetFreq.size();
+    int formedChars = 0;
+    unordered_map<char, int> windowFreq;
+    
+    // Step 3: Sliding window approach
+    while (right < s.length()) {
+        // Expand window by moving right pointer
+        char c = s[right];
+        windowFreq[c]++;
+        if (targetFreq.find(c) != targetFreq.end() && windowFreq[c] == targetFreq[c]) {
+            formedChars++;
+        }
+        
+        // Step 4: Shrink window if all characters from t are found
+        while (left <= right && formedChars == requiredChars) {
+            // Update minimum window length and start index
+            if (right - left + 1 < minWindowLen) {
+                minWindowLen = right - left + 1;
+                minWindowStart = left;
+            }
+            
+            // Shrink window by moving left pointer
+            char leftChar = s[left];
+            windowFreq[leftChar]--;
+            if (targetFreq.find(leftChar) != targetFreq.end() && windowFreq[leftChar] < targetFreq[leftChar]) {
+                formedChars--;
+            }
+            left++;
+        }
+        
+        // Move right pointer to expand window
+        right++;
+    }
+    
+    return minWindowLen == INT_MAX ? "" : s.substr(minWindowStart, minWindowLen);
+}
