@@ -1,0 +1,22 @@
+int largestSubarraySumK(const vector<int>& arr, int K) {
+    int n = arr.size();
+    unordered_map<int, int> prefixSum; // Map to store prefix sums
+    int maxLen = 0, currSum = 0;
+
+    for (int end = 0, start = 0; end < n; end++) {
+        // Update current sum
+        currSum += arr[end];
+
+        // If current sum equals K, update maximum length
+        if (currSum == K)
+            maxLen = max(maxLen, end - start + 1);
+
+        // If current sum exceeds K, move start pointer to reduce the sum
+        while (currSum > K && start <= end) {
+            currSum -= arr[start];
+            start++;
+        }
+    }
+
+    return maxLen;
+}
