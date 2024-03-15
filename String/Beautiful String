@@ -1,0 +1,46 @@
+int makeBeautiful(string str) {
+    int n=str.size();
+    int cnt1=0; // count describes no. of changes reqd.
+    int cnt2=0;
+    for(int i=0;i<n;i++) 
+    {
+        if(i%2==0)
+        {
+            if(str[i]=='1') // for 0101 series
+            {
+                cnt1++;
+            }
+            else if(str[i]=='0') // for 1010 series
+            {
+                cnt2++;
+            }
+        }
+
+        if(i%2==1) 
+
+        {
+
+            if(str[i]=='0')  // for 0101 series
+
+            {
+
+                cnt1++;
+
+            }
+
+            else if(str[i]=='1') // for 1010 series
+
+            {
+
+                cnt2++;
+
+            }
+
+        }
+
+    }
+
+    return min(cnt1,cnt2);
+
+}
+
