@@ -1,0 +1,88 @@
+#include <bits/stdc++.h> 
+int findMinimumCost(string str) {
+  // Write your code here
+   if(str.length()%2==1)
+
+    {
+
+      return -1;
+
+    }
+
+    stack<char>stac;
+
+    for(int i=0;i<str.length(); ++i)
+
+    {
+
+      char x = str[i];
+
+      if(x=='{')
+
+      {
+
+        stac.push(x);
+
+      } 
+
+      else 
+
+      {
+
+        if (x == '}')
+
+        {
+
+          if(!stac.empty() && stac.top()=='{')
+
+          {
+
+            stac.pop();
+
+          }
+
+          else
+
+          {
+
+            stac.push(x);
+
+          }
+
+        }
+
+      }
+
+    }
+
+    int a=0, b=0;
+
+    while(!stac.empty())
+
+    {
+
+      if(stac.top()=='{')
+
+      {
+
+        a++;
+
+      }
+
+      else
+
+      {
+
+        b++;
+
+      }
+
+      stac.pop();
+
+    }
+
+    int ans = (a+1)/2 + (b+1)/2;
+
+    return ans;
+
+}
