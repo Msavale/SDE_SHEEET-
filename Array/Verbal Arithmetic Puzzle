@@ -1,0 +1,137 @@
+#include <iostream>
+
+#include <vector>
+
+#include <unordered_map>
+
+using namespace std;
+
+ 
+
+// Forward declaration of isMappingPossible
+
+bool isMappingPossible(vector<string>& words, int currentRow, int currentCol, int balance,
+
+                  unordered_map<char, int>& letterToDigit, char digitToLetter[],
+
+                  int totalRows, int totalCols);
+
+ 
+
+bool isEndOfColumn(int row, int totalRows, int balance, vector<string>& words, int col, unordered_map<char, int>& letterToDigit, char digitToLetter[], int totalCols) {
+
+    return balance % 10 == 0 && isMappingPossible(words, 0, col + 1, balance / 10, letterToDigit, digitToLetter, totalRows, totalCols);
+
+}
+
+ 
+
+bool isEndOfString(int col, string& word, vector<string>& words, int row, int balance, unordered_map<char, int>& letterToDigit, char digitToLetter[], int totalRows, int totalCols) {
+
+    return isMappingPossible(words, row + 1, col, balance, letterToDigit, digitToLetter, totalRows, totalCols);
+
+}
+
+ 
+
+bool isMappingPossible(vector<string>& words, int currentRow, int currentCol, int balance,
+
+                  unordered_map<char, int>& letterToDigit, char digitToLetter[],
+
+                  int totalRows, int totalCols) {
+
+ 
+
+    if (currentCol == totalCols) return balance == 0;
+
+    if (currentRow == totalRows) return isEndOfColumn(currentRow, totalRows, balance, words, currentCol, letterToDigit, digitToLetter, totalCols);
+
+ 
+
+    string currentWord = words[currentRow];
+
+    if (currentCol >= currentWord.length()) return isEndOfString(currentCol, currentWord, words, currentRow, balance, letterToDigit, digitToLetter, totalRows, totalCols);
+
+ 
+
+    char currentLetter = currentWord[currentWord.length() - 1 - currentCol];
+
+    int sign = (currentRow < totalRows - 1) ? 1 : -1;
+
+ 
+
+    if (letterToDigit.find(currentLetter) != letterToDigit.end() &&
+
+        (letterToDigit[currentLetter] != 0 || (letterToDigit[currentLetter] == 0 && currentWord.length() == 1) || currentCol != currentWord.length() - 1)) {
+
+        return isMappingPossible(words, currentRow + 1, currentCol, balance + sign * letterToDigit[currentLetter], letterToDigit, digitToLetter, totalRows, totalCols);
+
+    }
+
+ 
+
+    for (int i = 0; i < 10; i++) {
+
+        if (digitToLetter[i] == '-' && (i != 0 || (i == 0 && currentWord.length() == 1) || currentCol != currentWord.length() - 1)) {
+
+            digitToLetter[i] = currentLetter;
+
+            letterToDigit[currentLetter] = i;
+
+ 
+
+            if (isMappingPossible(words, currentRow + 1, currentCol, balance + sign * letterToDigit[currentLetter], letterToDigit, digitToLetter, totalRows, totalCols)) {
+
+                return true;
+
+            }
+
+ 
+
+            digitToLetter[i] = '-';
+
+            letterToDigit.erase(currentLetter);
+
+        }
+
+    }
+
+ 
+
+    return false;
+
+}
+
+ 
+
+bool isSolvable(int m, vector<string>& words, string result) {
+
+    words.push_back(result);
+
+ 
+
+    int totalRows = words.size();
+
+    int totalCols = 0;
+
+ 
+
+    for (string& word : words) {
+
+        totalCols = max(totalCols, (int)word.length());
+
+    }
+
+ 
+
+    unordered_map<char, int> letterToDigit;
+
+    char digitToLetter[10];
+
+    fill(digitToLetter, digitToLetter+10, '-');
+
+ 
+
+    return isMappingPossible(words, 0, 0, 0, letterToDigit, digitToLetter, totalRows, totalCols);
+
+}
