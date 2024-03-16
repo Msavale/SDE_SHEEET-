@@ -1,0 +1,85 @@
+/**
+ * Definition of linked list
+ * class ListNode {
+ *     int val;
+ *     ListNode* next;
+ *     ListNode(int val = 0) {
+ *         this -> val = val;
+ *     }
+ *     ListNode(int val, ListNode* next) {
+ *         this -> val = val;
+ *         this -> next = next;
+ *     }
+ * }
+ */
+ListNode* deleteNodesOnRegularInterval(int a, int b, ListNode* head) {
+
+    // Write your code here
+
+    ListNode* temp=head;
+
+    int cnt=0;
+
+ 
+
+    while(temp)
+
+    {
+
+        temp=temp->next;
+
+        cnt++;
+
+    }
+
+ 
+
+    temp=head;
+
+ 
+
+    if(a>=cnt)   return head;
+
+ 
+
+    while(temp && temp->next)
+
+    {
+
+        for(int i=0;i<a-1;i++)
+
+        {
+
+            if(temp->next==NULL)    return head;
+
+            temp=temp->next;
+
+        }
+
+ 
+
+        ListNode* nex=temp;
+
+ 
+
+        for(int i=0;i<=b;i++)
+
+        {
+
+            if(nex==NULL) break;
+
+            nex=nex->next;
+
+        }
+
+        temp->next=nex;
+
+        temp=nex;
+
+    }
+
+ 
+
+    return head;
+
+}
