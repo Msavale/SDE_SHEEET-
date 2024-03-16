@@ -1,0 +1,135 @@
+#include<bits/stdc++.h>
+
+ 
+
+vector<string> wordsFound;
+
+ 
+
+struct Node{
+
+    Node *children[26];
+
+    int index = -1;
+
+};
+
+ 
+
+class Trie{
+
+private: 
+
+    Node *root;
+
+ 
+
+public: 
+
+    Trie(){
+
+        root = new Node();
+
+    }
+
+    void insert(string word,int index){
+
+        Node *node = root;
+
+        for(char ch : word){
+
+            if(node->children[ch-'a'] == NULL) node->children[ch-'a'] = new Node();
+
+            node = node->children[ch-'a'];
+
+        }
+
+        node->index = index;
+
+    }
+
+    Node *getRoot(){
+
+        return root;
+
+    }
+
+};
+
+ 
+
+int dir[9] = {-1,0,+1,0,-1,-1,+1,+1,-1};
+
+ 
+
+void dfs(int row,int col,Node *root,vector<string> &arr,vector<vector<char>> &mat){
+
+    int n = mat.size() , m = mat[0].size();
+
+    if(min(row,col) < 0 || row >= n || col >= m || mat[row][col] == '#') return;
+
+ 
+
+    char currChar = mat[row][col];
+
+    if(root->children[currChar-'a'] == NULL) return;
+
+ 
+
+    root = root->children[currChar-'a'];
+
+ 
+
+    if(root->index != -1){
+
+        wordsFound.push_back(arr[root->index]);
+
+        root->index = -1;
+
+    }
+
+ 
+
+    mat[row][col] = '#';
+
+ 
+
+    for(int d=0;d<8;d++) dfs(row+dir[d],col+dir[d+1],root,arr,mat);
+
+ 
+
+    mat[row][col] = currChar;
+
+}
+
+vector<string> findPossibleWords(vector<string> words, vector<vector<char>> mat){
+
+    wordsFound.resize(0);
+
+    Trie trie;
+
+    int w = words.size();
+
+    for(int index=0;index<w;index++) trie.insert(words[index],index);
+
+ 
+
+    Node* root = trie.getRoot();
+
+    int n = mat.size() , m = mat[0].size();
+
+    for(int row=0;row<n;row++){
+
+        for(int col=0;col<m;col++){
+
+            dfs(row,col,root,words,mat);
+
+        }
+
+    }
+
+    sort(wordsFound.begin(),wordsFound.end());
+
+    return wordsFound;
+
+}
