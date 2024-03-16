@@ -1,0 +1,75 @@
+#include <bits/stdc++.h> 
+
+using namespace std;
+
+ 
+
+int findMinLength(string &str, int n, int idx, int k, int lastChar, int lastCharCount, vector<vector<vector<vector<int>>>> &dp)
+
+{
+
+    if (idx == n)
+
+        return 0;
+
+ 
+
+    if (dp[idx][k][lastChar][lastCharCount] != -1)
+
+        return dp[idx][k][lastChar][lastCharCount];
+
+ 
+
+    int result = n + 1;
+
+ 
+
+    if (k > 0)
+
+        result = findMinLength(str, n, idx + 1, k - 1, lastChar, lastCharCount, dp);
+
+ 
+
+    if (str[idx] - 'a' == lastChar)
+
+    {
+
+        int increment = 0;
+
+        if (lastCharCount == 1 || lastCharCount == 9 || lastCharCount == 99)
+
+            increment = 1;
+
+ 
+
+        result = min(result, findMinLength(str, n, idx + 1, k, lastChar, lastCharCount + 1, dp) + increment);
+
+    }
+
+    else
+
+        result = min(result, findMinLength(str, n, idx + 1, k, str[idx] - 'a', 1, dp) + 1);
+
+ 
+
+    dp[idx][k][lastChar][lastCharCount] = result;
+
+ 
+
+    return dp[idx][k][lastChar][lastCharCount];
+
+}
+
+ 
+
+int minLengthOfCompressedString(string &str, int k)
+
+{
+
+    int n = str.length();
+
+    vector<vector<vector<vector<int>>>> dp(n, vector<vector<vector<int>>>(k + 1, vector<vector<int>>(27, vector<int>(n + 1, -1))));
+
+    return findMinLength(str, n, 0, k, 26, 0, dp);
+
+}
