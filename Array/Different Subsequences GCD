@@ -1,0 +1,71 @@
+#include <iostream>
+
+#include <vector>
+
+#include <unordered_set>
+
+ 
+
+using namespace std;
+
+ 
+
+int gcd(int a, int b) {
+
+    while (b != 0) {
+
+        int temp = b;
+
+        b = a % b;
+
+        a = temp;
+
+    }
+
+    return a;
+
+}
+
+ 
+
+int differentGCDSubsequence(vector<int> &arr) {
+
+    int n = arr.size();
+
+    
+
+    // Set to store unique GCDs
+
+    unordered_set<int> uniqueGCDs;
+
+ 
+
+    for (int i = 0; i < n; i++) {
+
+        // Include the individual elements in the GCD set
+
+        uniqueGCDs.insert(arr[i]);
+
+ 
+
+        // Include GCDs formed with elements seen so far
+
+        unordered_set<int> newGCDs;
+
+        for (int gcdElem : uniqueGCDs) {
+
+            newGCDs.insert(gcd(gcdElem, arr[i]));
+
+        }
+
+ 
+
+        uniqueGCDs.insert(newGCDs.begin(), newGCDs.end());
+
+    }
+
+ 
+
+    return uniqueGCDs.size();
+
+}
