@@ -1,0 +1,128 @@
+/************************************************************
+
+    Following is the Binary Tree node structure
+
+    class BinaryTreeNode 
+    {
+        public : 
+        T data;
+        BinaryTreeNode<T> *left;
+        BinaryTreeNode<T> *right;
+
+        BinaryTreeNode(T data) 
+        {
+            this -> data = data;
+            left = NULL;
+            right = NULL;
+        }
+    };
+
+************************************************************/
+
+int solve(BinaryTreeNode<int>* root, int& start, bool& isBurning, int& ans, int time, bool& isRepeat){
+
+    if(root==NULL){
+
+        return -1;
+
+    }
+
+
+ 
+
+    if(root->data == start){
+
+        isBurning = true;
+
+        time = 0;
+
+
+ 
+
+        int left = solve(root->left, start, isBurning, ans, time, isRepeat);
+
+        int right = solve(root->right, start, isBurning, ans, time, isRepeat);
+
+        isRepeat = true;
+
+        return 0;
+
+    }
+
+
+ 
+
+    if(isBurning || isRepeat){
+
+        ans = max(ans, time+1);
+
+        int left  = solve(root->left, start, isBurning, ans, time+1, isRepeat);
+
+        int right  = solve(root->right, start, isBurning, ans, time+1, isRepeat);
+
+        return -1;
+
+    }
+
+
+ 
+
+    int left = solve(root->left, start, isBurning, ans, time, isRepeat);
+
+    int right = solve(root->right, start, isBurning, ans, time, isRepeat);
+
+
+
+ 
+
+    if(left == -1 && right>=0){
+
+        ans = max(ans, right+1);
+
+        left = solve(root->left, start, isBurning, ans, right+1, isRepeat);
+
+        return right+1;
+
+    }
+
+
+ 
+
+    if(left >= 0 && right == -1){
+
+        ans = max(ans, left+1);
+
+        right = solve(root->right, start, isBurning, ans, left+1, isRepeat);
+
+        return left+1;
+
+    }
+
+
+ 
+
+    return -1;
+
+}
+
+
+
+ 
+
+int timeToBurnTree(BinaryTreeNode<int>* root, int start)
+
+{
+
+    int ans = 0;
+
+    bool isBurning = false;
+
+    bool isRepeat = false;
+
+    bool isBelow = false;
+
+    solve(root, start, isBurning, ans, -1, isRepeat);
+
+    return ans;
+
+}
