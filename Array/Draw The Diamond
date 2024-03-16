@@ -1,0 +1,84 @@
+void print_upper_line(int e, int o, int size)
+{
+	
+	for(int i=0;i<e/2;i++)
+		cout<<"e";
+	
+	cout<<"/";
+	
+	for(int i=0;i<o;i++)
+		cout<<"o";
+
+	cout<<"\\";
+
+	for(int i=0;i<e/2;i++)
+		cout<<"e";
+}
+
+void print_lower_line(int e, int o, int size)
+{
+	
+	for(int i=0;i<e/2;i++)
+		cout<<"e";
+	
+	cout<<"\\";
+	
+	for(int i=0;i<o;i++)
+		cout<<"o";
+
+	cout<<"/";
+
+	for(int i=0;i<e/2;i++)
+		cout<<"e";
+}
+
+void print_upper_diamond(int size,int c)
+{
+	int dash=2;
+	int e= 2*size-2;
+	int o=0;
+	
+	for(int i=0;i<size;i++)
+	{
+		int cols=c;
+		while(cols--)
+		{
+			print_upper_line(e,o,size);
+		}
+		e-=2;
+		o+=2;
+		cout<<endl;
+	}
+}
+
+
+void print_lower_diamond(int size,int c)
+{
+	int e=0;
+	int o=2*size-2;
+
+	for(int i=0;i<size;i++)
+	{
+		int cols=c;
+		while(cols--)
+			print_lower_line(e,o,size);
+		
+		e+=2;
+		o-=2;
+		cout<<endl;
+	}
+}
+
+void print_diamond(int size, int c)
+{
+	print_upper_diamond(size, c);
+	print_lower_diamond(size, c);
+}
+
+void printTheDiamond(int r, int c, int s)
+{
+	// Write your code here.
+	for(int i=0;i<r;i++)
+		print_diamond(s, c);
+	
+}
